@@ -5,7 +5,7 @@ import Header from "./Header";
 import Home from "./Home";
 import Login from "./Login";
 import Compare from "./Compare";
-import CoinData from "./Coin_data";
+import CoinData from "./Coindata";
 import "./App.css";
 
 /**
