@@ -1,25 +1,35 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Essential for single-page navigation
-import "./App.css"; // Using global styles for consistent layout
+import { Link } from "react-router-dom";
+import "./App.css";
 
 /**
  * Header.js: Navigation Component
- * This component renders the navigation bar that remains visible across all pages.
- * It uses 'Link' to enable seamless transitions between routes.
+ * This component provides the top navigation bar for the application.
+ * It links to the routes defined in App.js.
  */
-export default function Header() {
+function Header() {
   return (
     <nav className="header-nav">
       <div className="nav-brand">
-        <h1>CurrencyConv</h1>
+        <h1>Currency Tracker</h1>
       </div>
       <div className="nav-links">
-        {/* Link components point to the routes defined in App.js */}
-        <Link className="link-item" to="/">Home</Link>
-        <Link className="link-item" to="/login">Login</Link>
-        <Link className="link-item" to="/compare">Compare</Link>
-        <Link className="link-item" to="/coin_data">Coin Data</Link>
+        {/* Link components prevent page refresh and maintain React state */}
+        <Link to="/" className="link-item">
+          Home
+        </Link>
+        <Link to="/login" className="link-item">
+          Login
+        </Link>
+        <Link to="/compare" className="link-item">
+          Compare
+        </Link>
+        <Link to="/coin_data" className="link-item">
+          Coin Data
+        </Link>
       </div>
     </nav>
   );
 }
+
+export default Header;
