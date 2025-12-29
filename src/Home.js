@@ -1,28 +1,24 @@
 import React, { useContext, useState } from "react";
-import { userContext } from "./Context"; // Accessing global user authentication state
+import { userContext } from "./Context";
 import "./App.css";
 
 /**
- * Home.js: Welcome and Currency Symbols Page
- * This page displays a welcome message and fetches currency symbol data.
- * Access is restricted to logged-in users only.
+ * Home.js: Fetches the full list of currency names using RapidAPI.
  */
 export default function Home() {
-  // Accessing the shared login state and user details from Context
   const { email, password, userName, click } = useContext(userContext);
-  
-  const [symbols, setSymbols] = useState({}); // Stores the fetched currency data
-  const [loading, setLoading] = useState(false); // Manages the loading message state
+  const [symbols, setSymbols] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  // Function to fetch currency symbols from an external API via RapidAPI
   const fetchSymbols = async () => {
     setLoading(true);
+    // Using the RapidAPI credentials you provided
     const url = "https://currency-conversion-and-exchange-rates.p.rapidapi.com/symbols";
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "YOUR_ACTUAL_RAPIDAPI_KEY", // Replace with your RapidAPI key
-        "X-RapidAPI-Host": "currency-conversion-and-exchange-rates.p.rapidapi.com"
+        "x-rapidapi-host": "currency-conversion-and-exchange-rates.p.rapidapi.com",
+        "x-rapidapi-key": "92499a197bmsh972c66ee05be7d5p1b39e8jsn790740eff152"
       }
     };
 
@@ -30,11 +26,10 @@ export default function Home() {
       const response = await fetch(url, options);
       const result = await response.json();
       
-      // If the API call is successful, update the symbols state
       if (result.success) {
         setSymbols(result.symbols);
       } else {
-        console.error("API Error:", result.error);
+        alert("API Error: Please check your RapidAPI subscription.");
       }
     } catch (error) {
       console.error("Fetch failed:", error);
@@ -43,12 +38,12 @@ export default function Home() {
     }
   };
 
-  // Conditional Rendering: Only accessible if user is logged in (click is true)
+  // Access control check
   if (!(email && password && userName && click)) {
     return (
       <div className="auth-error">
         <h2>Access Denied</h2>
-        <p>Please navigate to the Login page and enter your credentials first.</p>
+        <p>Please login to view the currency reference list.</p>
       </div>
     );
   }
@@ -56,14 +51,12 @@ export default function Home() {
   return (
     <div className="home-container">
       <h2>Welcome, {userName}!</h2>
-      <p>Here you can view a comprehensive list of all supported currency codes and their full names.</p>
+      <p>Use the button below to load the full list of global currency symbols.</p>
       
-      {/* Button to trigger the asynchronous API fetch */}
       <button onClick={fetchSymbols} disabled={loading}>
-        {loading ? "Fetching Data..." : "ADD (Fetch Symbols)"}
+        {loading ? "Fetching Symbols..." : "Load Currency Directory"}
       </button>
 
-      {/* Displays the list of currency symbols post-fetch */}
       <div className="symbol-results">
         {Object.keys(symbols).length > 0 ? (
           <div className="symbol-grid">
@@ -74,7 +67,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          !loading && <p className="hint">Click "ADD" to load the currency reference list.</p>
+          !loading && <p className="hint">No data loaded yet.</p>
         )}
       </div>
     </div>
